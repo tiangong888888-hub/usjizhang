@@ -2,42 +2,6 @@ import telebot
 import sqlite3
 from datetime import datetime
 
-TOKEN = "8893654287:AAHo04e3_dVx2ldbeQTK5wO5HIEkiR-T6y4"
-bot = telebot.TeleBot(TOKEN)
-
-conn = sqlite3.connect('jizhang.db', check_same_thread=False)
-conn.execute('PRAGMA journal_mode=WAL')
-conn.execute('''CREATE TABLE IF NOT EXISTS records (
-             id INTEGER PRIMARY KEY, 
-             chat_id TEXT,
-             type TEXT,
-             time TEXT,
-             amount REAL,
-             rate REAL,
-             result REAL,
-             note TEXT,
-             date TEXT,
-             timestamp REAL)''')
-conn.commit()
-
-bot_join_time = {}
-
-# ================== 开始 / 结束 ==================
-@bot.message_handler(commands=['start', '开始'])
-def start_bot(message):
-    cid = str(message.chat.id)
-    bot_join_time[cid] = datetime.now().timestamp()
-    bot.reply_to(message, "🚀 记账已开始！现在可以记账了")
-
-@bot.message_handler(commands=['stop', '结束', '停止'])
-def stop_bot(message):
-    cid = str(message.chat.id)
-    if cid in bot_join_time:
-        del bot_join_time[cid]
-    bot.reply_to(message, "⏹️ 记账已结束")
-
-# ================== 删除功能（回复 + 取消/删除） ==================
-@bot.message_handler(func=lambda m: True)
 def handle(message):
     cid = str(message.chat.id)
     if cid not in bot_join_time:
