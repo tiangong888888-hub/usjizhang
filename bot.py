@@ -1,20 +1,4 @@
-import telebot
-import sqlite3
-from datetime import datetime
 
-def handle(message):
-    cid = str(message.chat.id)
-    if cid not in bot_join_time:
-        return
-
-    text = (message.text or "").strip()
-
-    # 删除功能
-    if message.reply_to_message and ("取消" in text or "删除" in text):
-        delete_last_record(message)
-        return
-
-    if not text or text[0] not in ['+', '➕', '-', '➖']:
         return
 
     # 正常记账逻辑（省略中间部分，与之前一致）
